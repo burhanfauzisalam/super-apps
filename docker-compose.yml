@@ -1,6 +1,9 @@
 services:
     app:
-        image: php:8.3-apache
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: super-app
         container_name: super-app
         ports:
             - "1000:80"
@@ -10,18 +13,6 @@ services:
         working_dir: /var/www/html
         networks:
             - mysql-net
-        command: >
-            bash -c "
-            apt update &&
-            apt install -y libzip-dev unzip libonig-dev libxml2-dev libcurl4-openssl-dev zip git mariadb-client &&
-            docker-php-ext-install pdo pdo_mysql zip mbstring xml curl bcmath &&
-            a2enmod rewrite &&
-            curl -sS https://getcomposer.org/installer | php &&
-            mv composer.phar /usr/local/bin/composer &&
-            composer install &&
-            php artisan migrate &&
-            apache2-foreground
-            "
 
 networks:
     mysql-net:
