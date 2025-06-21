@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+    app:
+        image: php:8.3-apache
+        container_name: laravel-app
+        ports:
+            - "1000:80"
+        volumes:
+            - ./:/var/www/html
+            - ./apache.conf:/etc/apache2/sites-enabled/000-default.conf
+        working_dir: /var/www/html
+        networks:
+            - mysql-net
+        command: >
+            bash -c "
+            apt update &&
+            apt install -y libzip-dev unzip libonig-dev libxml2-dev libcurl4-openssl-dev zip git &&
+            docker-php-ext-install pdo pdo_mysql zip mbstring xml curl bcmath &&
+            a2enmod rewrite &&
+            composer install &&
+            php artisan migrate &&
+            apache2-foreground
+            "
+
+networks:
+    mysql-net:
+        external: true
