@@ -13,9 +13,11 @@ services:
         command: >
             bash -c "
             apt update &&
-            apt install -y libzip-dev unzip libonig-dev libxml2-dev libcurl4-openssl-dev zip git &&
+            apt install -y libzip-dev unzip libonig-dev libxml2-dev libcurl4-openssl-dev zip git mariadb-client &&
             docker-php-ext-install pdo pdo_mysql zip mbstring xml curl bcmath &&
             a2enmod rewrite &&
+            curl -sS https://getcomposer.org/installer | php &&
+            mv composer.phar /usr/local/bin/composer &&
             composer install &&
             php artisan migrate &&
             apache2-foreground
