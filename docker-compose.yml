@@ -2,8 +2,8 @@ version: "3.8"
 
 services:
     app:
-        image: php:8.3-apache
-        container_name: laravel-app
+        image: super-apps
+        container_name: super-app
         ports:
             - "1000:80"
         volumes:
